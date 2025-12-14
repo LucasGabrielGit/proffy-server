@@ -1,16 +1,21 @@
-# Proffy Server
+# Nexu (formerly Proffy Server)
 
-Backend da aplicação Proffy, uma plataforma construída para conectar professores e alunos. Este projeto utiliza uma arquitetura moderna e performática baseada em **Fastify**, **Prisma** e **TypeScript**, organizada em um **Monorepo** gerenciado pelo TurboRepo.
+Nexu é uma plataforma construída para conectar professores e alunos. *Onde o conhecimento se conecta.*
+
+Este projeto utiliza uma arquitetura moderna e performática baseada em **Fastify**, **Prisma** e **TypeScript**, organizada em um **Monorepo** gerenciado pelo TurboRepo.
 
 ## 🚀 Tecnologias
 
 As principais ferramentas utilizadas no desenvolvimento deste projeto:
 
-- **Node.js** & **TypeScript**: Base sólida e tipada para o backend.
-- **Fastify**: Framework web focado em alta performance e baixo overhead.
+- **Node.js** & **TypeScript**: Base sólida e tipada para todo o monorepo.
+- **Fastify**: Framework web focado em alta performance e baixo overhead (Backend).
 - **Prisma ORM**: ORM moderno para interação segura e fácil com o banco de dados.
 - **PostgreSQL**: Banco de dados relacional robusto.
-- **Zod**: Biblioteca para validação de esquemas e dados.
+- **React** & **Vite**: Biblioteca para interfaces de usuário e ferramenta de build rápida (Frontend).
+- **Tailwind CSS**: Framework de utilitários para estilização ágil.
+- **TanStack Router, Query & Form**: Gerenciamento de rotas, estado de servidor e formulários no frontend.
+- **Zod**: Biblioteca para validação de esquemas e dados (compartilhado).
 - **JWT (JSON Web Token)**: Padrão para autenticação segura entre as partes.
 - **TurboRepo**: Ferramenta de build system para monorepos JavaScript/TypeScript.
 - **Docker**: Para containerização do serviço de banco de dados.
@@ -22,7 +27,8 @@ O projeto segue uma estrutura de monorepo:
 ```
 proffy-server/
 ├── apps/
-│   └── server/       # Aplicação Backend principal (Fastify)
+│   ├── server/       # Aplicação Backend principal (Fastify)
+│   └── web/          # Aplicação Frontend (React + Vite)
 ├── packages/
 │   ├── db/           # Camada de Banco de Dados (Schema do Prisma, Migrations, Docker)
 │   └── config/       # Configurações compartilhadas (TSConfig base, etc.)
@@ -60,20 +66,22 @@ Certifique-se de ter instalado em sua máquina:
     npm run db:migrate
     ```
 
-5.  **Inicie o Servidor:**
-    Rode o servidor em modo de desenvolvimento:
+5.  **Inicie a Aplicação:**
+    Para rodar tanto o Backend quanto o Frontend simultaneamente:
     ```bash
-    npm run dev:server
+    npm run dev
     ```
     
-    🚀 O servidor estará rodando em: `http://localhost:3000`
+    🚀 **Backend:** `http://localhost:3000`
+    ✨ **Frontend:** `http://localhost:5173` (ou porta indicada no terminal)
 
 ## 📜 Scripts Principais
 
 No `package.json` raiz, você encontrará atalhos úteis:
 
-- **`npm run dev`**: Inicia todos os apps do monorepo em modo watch.
+- **`npm run dev`**: Inicia todos os apps (Server + Web) do monorepo.
 - **`npm run dev:server`**: Inicia apenas o backend (`apps/server`).
+- **`npm run dev:web`**: Inicia apenas o frontend (`apps/web`).
 - **`npm run db:start`**: Sobe o banco de dados (Docker Compose).
 - **`npm run db:stop`**: Para o banco de dados.
 - **`npm run db:studio`**: Abre o **Prisma Studio** no navegador para gerenciar os dados visualmente.
