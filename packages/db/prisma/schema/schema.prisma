@@ -1,0 +1,55 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated"
+  moduleFormat = "esm"
+  runtime      = "nodejs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id          String       @id @default(cuid())
+  name        String
+  email       String       @unique
+  password    String
+  avatar      String
+  whatsapp    String
+  bio         String
+  classes     Class[]
+  connections Connection[]
+
+  @@map("users")
+}
+
+model Class {
+  id             String          @id @default(cuid())
+  subject        String
+  cost           String
+  user_id        String
+  user           User            @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  class_schedule ClassSchedule[]
+
+  @@map("classes")
+}
+
+model ClassSchedule {
+  id       String @id @default(cuid())
+  week_day Int
+  from     Int
+  to       Int
+  class_id String
+  class    Class  @relation(fields: [class_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("class_schedule")
+}
+
+model Connection {
+  id         String   @id @default(cuid())
+  user_id    String
+  created_at DateTime @default(now())
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("connections")
+}
