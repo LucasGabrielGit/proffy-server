@@ -1,29 +1,27 @@
 import { Link } from "@tanstack/react-router";
+import arrow_back from "../assets/arrow-back.svg"
 import { ModeToggle } from "./mode-toggle";
 
-export default function Header() {
-	const links = [{ to: "/", label: "Home" }] as const;
+type TypeProps = {
+	title?: string
+	to?: string
+}
+
+export default function Header({ title, to }: TypeProps) {
 
 	return (
-		<div>
-			<div className="flex flex-row items-center justify-between px-2 py-1">
+		<header className="sticky top-0 z-10 bg-[#774DD6] border-b border-[#6842C2]">
+			<div className="flex flex-row items-center justify-between py-4 mx-auto w-full max-w-[1120px] sm:px-4 md:px-0">
+				<Link to={to}>
+					<img src={arrow_back} alt="Voltar" />
+				</Link>
 				<div className="flex items-center gap-4">
-					<h1 className="text-2xl font-bold text-primary">Nexu</h1>
-					<nav className="flex gap-4 text-lg">
-						{links.map(({ to, label }) => {
-							return (
-								<Link key={to} to={to}>
-									{label}
-								</Link>
-							);
-						})}
-					</nav>
+					<h1 className="text-base text-zinc-200 font-medium">{title}</h1>
 				</div>
 				<div className="flex items-center gap-2">
 					<ModeToggle />
 				</div>
 			</div>
-			<hr />
-		</div>
+		</header>
 	);
 }

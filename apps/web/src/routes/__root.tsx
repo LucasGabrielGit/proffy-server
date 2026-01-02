@@ -1,16 +1,16 @@
-import Header from "@/components/header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import type { AuthContextType } from "@/contexts/auth-context";
 import {
 	HeadContent,
 	Outlet,
-	createRootRouteWithContext,
-	useLocation,
+	createRootRouteWithContext
 } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import "../index.css";
 
-export interface RouterAppContext { }
+export interface RouterAppContext {
+	auth: AuthContextType;
+}
 
 export const Route = createRootRouteWithContext<RouterAppContext>()({
 	component: RootComponent,
@@ -34,27 +34,21 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
 });
 
 function RootComponent() {
-	const location = useLocation();
-	const isLoginPage = location.pathname.startsWith('/login');
 
 	return (
 		<>
 			<HeadContent />
 			<ThemeProvider
-				attribute="class"
 				defaultTheme="dark"
-				disableTransitionOnChange
 				storageKey="vite-ui-theme"
 			>
 				<div className="grid grid-rows-[auto_1fr] h-svh">
-					{!isLoginPage && <Header />}
-					<main className={`${isLoginPage ? 'h-svh' : ''}`}>
+					<main className="svh">
 						<Outlet />
 					</main>
 				</div>
 				<Toaster richColors />
 			</ThemeProvider>
-			<TanStackRouterDevtools position="bottom-left" />
 		</>
 	);
 }

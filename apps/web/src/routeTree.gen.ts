@@ -8,83 +8,178 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as RegisterIndexRouteImport } from './routes/register/index'
-import { Route as LoginIndexRouteImport } from './routes/login/index'
-import { Route as ForgotPasswordIndexRouteImport } from './routes/forgot-password/index'
+import { createFileRoute } from '@tanstack/react-router'
 
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as NotFoundRouteImport } from './routes/not-found'
+import { Route as StudyIndexRouteImport } from './routes/study/index'
+import { Route as RegisterSuccessIndexRouteImport } from './routes/register-success/index'
+import { Route as HomeIndexRouteImport } from './routes/home/index'
+import { Route as GiveClassesIndexRouteImport } from './routes/give-classes/index'
+import { Route as ForgotPasswordIndexRouteImport } from './routes/forgot-password/index'
+import { Route as RegisterLayoutRouteImport } from './routes/register/_layout'
+import { Route as LoginLayoutRouteImport } from './routes/login/_layout'
+import { Route as RegisterLayoutIndexRouteImport } from './routes/register/_layout.index'
+import { Route as LoginLayoutIndexRouteImport } from './routes/login/_layout.index'
+
+const RegisterRouteImport = createFileRoute('/register')()
+const LoginRouteImport = createFileRoute('/login')()
+
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const NotFoundRoute = NotFoundRouteImport.update({
+  id: '/not-found',
+  path: '/not-found',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RegisterIndexRoute = RegisterIndexRouteImport.update({
-  id: '/register/',
-  path: '/register/',
+const StudyIndexRoute = StudyIndexRouteImport.update({
+  id: '/study/',
+  path: '/study/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LoginIndexRoute = LoginIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => LoginRoute,
+const RegisterSuccessIndexRoute = RegisterSuccessIndexRouteImport.update({
+  id: '/register-success/',
+  path: '/register-success/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomeIndexRoute = HomeIndexRouteImport.update({
+  id: '/home/',
+  path: '/home/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GiveClassesIndexRoute = GiveClassesIndexRouteImport.update({
+  id: '/give-classes/',
+  path: '/give-classes/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ForgotPasswordIndexRoute = ForgotPasswordIndexRouteImport.update({
   id: '/forgot-password/',
   path: '/forgot-password/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RegisterLayoutRoute = RegisterLayoutRouteImport.update({
+  id: '/_layout',
+  getParentRoute: () => RegisterRoute,
+} as any)
+const LoginLayoutRoute = LoginLayoutRouteImport.update({
+  id: '/_layout',
+  getParentRoute: () => LoginRoute,
+} as any)
+const RegisterLayoutIndexRoute = RegisterLayoutIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => RegisterLayoutRoute,
+} as any)
+const LoginLayoutIndexRoute = LoginLayoutIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LoginLayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/login': typeof LoginRouteWithChildren
+  '/not-found': typeof NotFoundRoute
+  '/login': typeof LoginLayoutRouteWithChildren
+  '/register': typeof RegisterLayoutRouteWithChildren
   '/forgot-password': typeof ForgotPasswordIndexRoute
-  '/login/': typeof LoginIndexRoute
-  '/register': typeof RegisterIndexRoute
+  '/give-classes': typeof GiveClassesIndexRoute
+  '/home': typeof HomeIndexRoute
+  '/register-success': typeof RegisterSuccessIndexRoute
+  '/study': typeof StudyIndexRoute
+  '/login/': typeof LoginLayoutIndexRoute
+  '/register/': typeof RegisterLayoutIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/not-found': typeof NotFoundRoute
+  '/login': typeof LoginLayoutIndexRoute
+  '/register': typeof RegisterLayoutIndexRoute
   '/forgot-password': typeof ForgotPasswordIndexRoute
-  '/login': typeof LoginIndexRoute
-  '/register': typeof RegisterIndexRoute
+  '/give-classes': typeof GiveClassesIndexRoute
+  '/home': typeof HomeIndexRoute
+  '/register-success': typeof RegisterSuccessIndexRoute
+  '/study': typeof StudyIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/not-found': typeof NotFoundRoute
   '/login': typeof LoginRouteWithChildren
+  '/login/_layout': typeof LoginLayoutRouteWithChildren
+  '/register': typeof RegisterRouteWithChildren
+  '/register/_layout': typeof RegisterLayoutRouteWithChildren
   '/forgot-password/': typeof ForgotPasswordIndexRoute
-  '/login/': typeof LoginIndexRoute
-  '/register/': typeof RegisterIndexRoute
+  '/give-classes/': typeof GiveClassesIndexRoute
+  '/home/': typeof HomeIndexRoute
+  '/register-success/': typeof RegisterSuccessIndexRoute
+  '/study/': typeof StudyIndexRoute
+  '/login/_layout/': typeof LoginLayoutIndexRoute
+  '/register/_layout/': typeof RegisterLayoutIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/forgot-password' | '/login/' | '/register'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/forgot-password' | '/login' | '/register'
-  id:
-    | '__root__'
-    | '/'
+  fullPaths:
+    | '/not-found'
     | '/login'
-    | '/forgot-password/'
+    | '/register'
+    | '/forgot-password'
+    | '/give-classes'
+    | '/home'
+    | '/register-success'
+    | '/study'
     | '/login/'
     | '/register/'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/not-found'
+    | '/login'
+    | '/register'
+    | '/forgot-password'
+    | '/give-classes'
+    | '/home'
+    | '/register-success'
+    | '/study'
+  id:
+    | '__root__'
+    | '/not-found'
+    | '/login'
+    | '/login/_layout'
+    | '/register'
+    | '/register/_layout'
+    | '/forgot-password/'
+    | '/give-classes/'
+    | '/home/'
+    | '/register-success/'
+    | '/study/'
+    | '/login/_layout/'
+    | '/register/_layout/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  NotFoundRoute: typeof NotFoundRoute
   LoginRoute: typeof LoginRouteWithChildren
+  RegisterRoute: typeof RegisterRouteWithChildren
   ForgotPasswordIndexRoute: typeof ForgotPasswordIndexRoute
-  RegisterIndexRoute: typeof RegisterIndexRoute
+  GiveClassesIndexRoute: typeof GiveClassesIndexRoute
+  HomeIndexRoute: typeof HomeIndexRoute
+  RegisterSuccessIndexRoute: typeof RegisterSuccessIndexRoute
+  StudyIndexRoute: typeof StudyIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -92,26 +187,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/not-found': {
+      id: '/not-found'
+      path: '/not-found'
+      fullPath: '/not-found'
+      preLoaderRoute: typeof NotFoundRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/register/': {
-      id: '/register/'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterIndexRouteImport
+    '/study/': {
+      id: '/study/'
+      path: '/study'
+      fullPath: '/study'
+      preLoaderRoute: typeof StudyIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/login/': {
-      id: '/login/'
-      path: '/'
-      fullPath: '/login/'
-      preLoaderRoute: typeof LoginIndexRouteImport
-      parentRoute: typeof LoginRoute
+    '/register-success/': {
+      id: '/register-success/'
+      path: '/register-success'
+      fullPath: '/register-success'
+      preLoaderRoute: typeof RegisterSuccessIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home/': {
+      id: '/home/'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/give-classes/': {
+      id: '/give-classes/'
+      path: '/give-classes'
+      fullPath: '/give-classes'
+      preLoaderRoute: typeof GiveClassesIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/forgot-password/': {
       id: '/forgot-password/'
@@ -120,24 +229,92 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ForgotPasswordIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/register/_layout': {
+      id: '/register/_layout'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterLayoutRouteImport
+      parentRoute: typeof RegisterRoute
+    }
+    '/login/_layout': {
+      id: '/login/_layout'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginLayoutRouteImport
+      parentRoute: typeof LoginRoute
+    }
+    '/register/_layout/': {
+      id: '/register/_layout/'
+      path: '/'
+      fullPath: '/register/'
+      preLoaderRoute: typeof RegisterLayoutIndexRouteImport
+      parentRoute: typeof RegisterLayoutRoute
+    }
+    '/login/_layout/': {
+      id: '/login/_layout/'
+      path: '/'
+      fullPath: '/login/'
+      preLoaderRoute: typeof LoginLayoutIndexRouteImport
+      parentRoute: typeof LoginLayoutRoute
+    }
   }
 }
 
+interface LoginLayoutRouteChildren {
+  LoginLayoutIndexRoute: typeof LoginLayoutIndexRoute
+}
+
+const LoginLayoutRouteChildren: LoginLayoutRouteChildren = {
+  LoginLayoutIndexRoute: LoginLayoutIndexRoute,
+}
+
+const LoginLayoutRouteWithChildren = LoginLayoutRoute._addFileChildren(
+  LoginLayoutRouteChildren,
+)
+
 interface LoginRouteChildren {
-  LoginIndexRoute: typeof LoginIndexRoute
+  LoginLayoutRoute: typeof LoginLayoutRouteWithChildren
 }
 
 const LoginRouteChildren: LoginRouteChildren = {
-  LoginIndexRoute: LoginIndexRoute,
+  LoginLayoutRoute: LoginLayoutRouteWithChildren,
 }
 
 const LoginRouteWithChildren = LoginRoute._addFileChildren(LoginRouteChildren)
 
+interface RegisterLayoutRouteChildren {
+  RegisterLayoutIndexRoute: typeof RegisterLayoutIndexRoute
+}
+
+const RegisterLayoutRouteChildren: RegisterLayoutRouteChildren = {
+  RegisterLayoutIndexRoute: RegisterLayoutIndexRoute,
+}
+
+const RegisterLayoutRouteWithChildren = RegisterLayoutRoute._addFileChildren(
+  RegisterLayoutRouteChildren,
+)
+
+interface RegisterRouteChildren {
+  RegisterLayoutRoute: typeof RegisterLayoutRouteWithChildren
+}
+
+const RegisterRouteChildren: RegisterRouteChildren = {
+  RegisterLayoutRoute: RegisterLayoutRouteWithChildren,
+}
+
+const RegisterRouteWithChildren = RegisterRoute._addFileChildren(
+  RegisterRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  NotFoundRoute: NotFoundRoute,
   LoginRoute: LoginRouteWithChildren,
+  RegisterRoute: RegisterRouteWithChildren,
   ForgotPasswordIndexRoute: ForgotPasswordIndexRoute,
-  RegisterIndexRoute: RegisterIndexRoute,
+  GiveClassesIndexRoute: GiveClassesIndexRoute,
+  HomeIndexRoute: HomeIndexRoute,
+  RegisterSuccessIndexRoute: RegisterSuccessIndexRoute,
+  StudyIndexRoute: StudyIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -21,8 +21,8 @@ export class ConnectionsController {
         }
     }
 
-    async create(req: FastifyRequest<{ Body: { user_id: string } }>, res: FastifyReply) {
-        const { user_id } = req.body
+    async create(req: FastifyRequest, res: FastifyReply) {
+        const { user_id } = req.body as { user_id: string }
         try {
             await prisma.connection.create({
                 data: {

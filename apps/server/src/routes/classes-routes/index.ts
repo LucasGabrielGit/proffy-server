@@ -5,6 +5,6 @@ import type { FastifyInstance } from "fastify";
 export const classesRoutes = (fastify: FastifyInstance) => {
     const classesController = new ClassesController();
 
-    fastify.get("/classes", classesController.getClasses);
+    fastify.get("/classes", { onRequest: [verifyJwt] }, classesController.getClasses);
     fastify.post("/classes", { onRequest: [verifyJwt] }, classesController.create);
 }

@@ -1,19 +1,29 @@
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import ReactDOM from "react-dom/client";
 import Loader from "./components/loader";
+import { AuthProvider, useAuth } from "./contexts/auth-context";
 import { routeTree } from "./routeTree.gen";
 
 const router = createRouter({
 	routeTree,
 	defaultPreload: "intent",
 	defaultPendingComponent: () => <Loader />,
-	context: {},
+	context: {
+		auth: undefined!,
+	},
 });
 
 declare module "@tanstack/react-router" {
 	interface Register {
 		router: typeof router;
 	}
+}
+
+function InnerApp() {
+	const auth = useAuth();
+
+
+	return <RouterProvider router={router} context={{ auth }} />;
 }
 
 const rootElement = document.getElementById("app");
@@ -24,5 +34,9 @@ if (!rootElement) {
 
 if (!rootElement.innerHTML) {
 	const root = ReactDOM.createRoot(rootElement);
-	root.render(<RouterProvider router={router} />);
+	root.render(
+		<AuthProvider>
+			<InnerApp />
+		</AuthProvider>,
+	);
 }

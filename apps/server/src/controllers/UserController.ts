@@ -2,6 +2,7 @@ import prisma from "@proffy-server/db";
 import bcrypt from "bcryptjs";
 import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
+import type { User } from "../../../../packages/db/prisma/generated/client";
 
 const createUserSchema = z.object({
     name: z.string(),
@@ -33,25 +34,40 @@ export class UserController {
             const user = await prisma.user.findUniqueOrThrow({
                 where: {
                     email: data.email,
-                }
+                },
             }).catch(() => {
-                throw new Error("Email not found");
+                throw new Error("E-mail não encontrado");
             })
 
             const passwordMatch = await bcrypt.compare(data.password, user.password);
             if (!passwordMatch) {
-                throw new Error("Invalid password");
+                throw new Error("Senha inválida");
             }
 
             const token = await res.jwtSign({
                 sub: user.id,
-                email: user.email,
+                user: {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    avatar: user.avatar,
+                    whatsapp: user.whatsapp,
+                    bio: user.bio,
+                }
             }, {
                 expiresIn: "1h",
             })
-            console.log(token)
 
-            res.status(200).send({ token })
+            res.status(200).send({
+                token, user: {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    avatar: user.avatar,
+                    whatsapp: user.whatsapp,
+                    bio: user.bio,
+                }
+            })
 
         } catch (error) {
             if (error instanceof z.ZodError) {
@@ -204,6 +220,20 @@ export class UserController {
             res.status(200).send({
                 message: "Password updated successfully",
             })
+        } catch (error) {
+            if (error instanceof Error) {
+                res.status(400).send({
+                    message: error.message,
+                })
+            }
+        }
+    }
+
+    async verify(req: FastifyRequest, res: FastifyReply) {
+        try {
+            const { user } = await req.jwtVerify() as { user: User }
+
+            res.status(200).send(user);
         } catch (error) {
             if (error instanceof Error) {
                 res.status(400).send({

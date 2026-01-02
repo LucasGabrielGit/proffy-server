@@ -1,0 +1,3 @@
+### GET /auth/verify
+GET http://localhost:3000/auth/verify
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWo1cWo1dHgwMDAwdmNmNXI0Yzk3NTB2IiwiZW1haWwiOiJsdWNhc2dhYnJpZWxmdHAxN0BnbWFpbC5jb20iLCJpYXQiOjE3NjU5MzQ2NjIsImV4cCI6MTc2NTkzODI2Mn0.QTlgEHQzo4gjthZMAareRp28dokfG9Dpu47GdF8OLts
